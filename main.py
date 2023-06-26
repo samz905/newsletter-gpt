@@ -1,8 +1,7 @@
 import openai
+from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
-from langchain.retrievers import SelfQueryRetriever
-from langchain.chains import RetrievalQA
+from langchain import OpenAI
 import os
 import json
 from dotenv import load_dotenv
@@ -60,16 +59,25 @@ function_descriptions = [
 ]
 
 def summarise_newsletter(content):
-    query_summary = f"Please generate a comprehensive newletter summary for the following newsletter: {content}"
-    messages_summary = [{"role": "user", "content": query_summary}]
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
+    split_content = text_splitter.split_documents(content)
 
-    response = openai.ChatCompletion.create(
-        model=models[0],
-        temperature=0.5,
-        messages=messages_summary,
-    )
+    llm = OpenAI(model=models[0], temperature=0.5)
 
-    summary = response["choices"][0]["message"]["content"]
+    chain = load_summarize_chain(llm, chain_type="map_reduce")
+    summary = chain.run(split_content)
+
+# def summarise_newsletter(content):
+#     query_summary = f"Please generate a comprehensive newletter summary for the following newsletter: {content}"
+#     messages_summary = [{"role": "user", "content": query_summary}]
+
+#     response = openai.ChatCompletion.create(
+#         model=models[0],
+#         temperature=0.5,
+#         messages=messages_summary,
+#     )
+
+#     summary = response["choices"][0]["message"]["content"]
 
     query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {summary}"
     messages_title = [{"role": "user", "content": query_title}]
