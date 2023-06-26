@@ -1,4 +1,8 @@
 import openai
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.retrievers import SelfQueryRetriever
+from langchain.chains import RetrievalQA
 import os
 import json
 from dotenv import load_dotenv
