@@ -72,18 +72,6 @@ def summarise_newsletter(content):
     chain = load_summarize_chain(llm, chain_type="map_reduce")
     summary = chain.run(docs)
 
-# def summarise_newsletter(content):
-#     query_summary = f"Please generate a comprehensive newletter summary for the following newsletter: {content}"
-#     messages_summary = [{"role": "user", "content": query_summary}]
-
-#     response = openai.ChatCompletion.create(
-#         model=models[0],
-#         temperature=0.5,
-#         messages=messages_summary,
-#     )
-
-#     summary = response["choices"][0]["message"]["content"]
-
     query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {summary}"
     messages_title = [{"role": "user", "content": query_title}]
 
@@ -109,7 +97,6 @@ def create_notion_page(data: dict):
     create_url = "https://api.notion.com/v1/pages"
 
     res = requests.post(create_url, headers=headers, data=json.dumps(data))
-    # print(res.status_code)
 
     print(res.json())
 
