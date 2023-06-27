@@ -1,7 +1,8 @@
 import openai
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain import OpenAI
+from langchain.docstore.document import Document
+from langchain.chat_models import ChatOpenAI
 import os
 import json
 from dotenv import load_dotenv
@@ -64,10 +65,12 @@ def summarise_newsletter(content):
 
     print(len(split_content))
 
-    llm = OpenAI(model=models[0], temperature=0.5)
+    llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
+
+    docs = [Document(page_content=t) for t in split_content]
 
     chain = load_summarize_chain(llm, chain_type="map_reduce")
-    summary = chain.run(split_content)
+    summary = chain.run(docs)
 
 # def summarise_newsletter(content):
 #     query_summary = f"Please generate a comprehensive newletter summary for the following newsletter: {content}"
