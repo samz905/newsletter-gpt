@@ -62,6 +62,8 @@ def summarise_newsletter(content):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     split_content = text_splitter.split_documents(content)
 
+    print(len(split_content))
+
     llm = OpenAI(model=models[0], temperature=0.5)
 
     chain = load_summarize_chain(llm, chain_type="map_reduce")
