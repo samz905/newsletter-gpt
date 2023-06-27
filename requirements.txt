@@ -3,4 +3,3 @@ openai
 python-dotenv
 pydantic
 langchain
-tiktoken
