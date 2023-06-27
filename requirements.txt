@@ -3,3 +3,5 @@ openai
 python-dotenv
 pydantic
 langchain
+langchain.chains.summarize
+langchain.text_splitter
