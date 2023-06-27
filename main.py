@@ -87,6 +87,7 @@ def summarise_newsletter(content):
             temperature=0.5,
             max_tokens=100
         )
+        print(response.choices[0].text.strip())
         summary.append(response.choices[0].text.strip())
 
     # Join the summaries together
