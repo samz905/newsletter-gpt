@@ -93,7 +93,7 @@ def summarise_newsletter(content):
     # # Join the summaries together
     # summary = ' '.join(summary)
 
-    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {content[100]}"
+    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {content}"
     messages_title = [{"role": "user", "content": query_title}]
 
     title = openai.ChatCompletion.create(
@@ -108,7 +108,7 @@ def summarise_newsletter(content):
 
     summary_object = {
         "title": title,
-        "summary": content[100]
+        "summary": content
     }
 
     print(summary_object)
@@ -167,7 +167,7 @@ def read_root():
 @app.post("/")
 def email_to_notion(email: Email):
     content = email.content
-    query = f"Please check if this email is a newsletter or not: {content} "
+    query = f"Please check if this email is a newsletter or not: {content[100]} "
 
     messages = [{"role": "user", "content": query}]
 
@@ -193,7 +193,7 @@ def email_to_notion(email: Email):
     is_newsletter = json_args["is_newsletter"]
 
     if is_newsletter:
-        summary_obj = summarise_newsletter(content)
+        summary_obj = summarise_newsletter(content[100])
     else:
         summary_obj = None
     
