@@ -1,5 +1,5 @@
 import openai
-# from langchain.chains.summarize import load_summarize_chain
+from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.docstore.document import Document
 from langchain.chat_models import ChatOpenAI
