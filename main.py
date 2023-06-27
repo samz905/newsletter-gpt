@@ -40,8 +40,7 @@ function_descriptions = [
                     "type": "boolean",
                     "description": "Accepts a true value if the contents of the email is a newsletter"
                 }
-            },
-            "required": ["is_newsletter"]
+            }
         }
     },
     {
@@ -54,8 +53,7 @@ function_descriptions = [
                     "type": "string",
                     "description": "Generated title for the summary containing less than 100 characters"
                 }
-            },
-            "required": ["title"]
+            }
         }
     }
 ]
