@@ -70,7 +70,7 @@ def summarise_newsletter(content):
     docs = [Document(page_content=t) for t in split_content]
 
     chain = load_summarize_chain(llm, chain_type="map_reduce")
-    summary = chain.run(docs)
+    summary = chain.run(docs[0])
 
     query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {summary}"
     messages_title = [{"role": "user", "content": query_title}]
