@@ -122,7 +122,7 @@ def create_notion_page(data: dict):
 
     res = requests.post(create_url, headers=headers, data=json.dumps(data))
 
-    print(res.json())
+    print("Notion response:", res.json())
 
     return res
 
