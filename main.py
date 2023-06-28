@@ -114,7 +114,7 @@ def summarise_newsletter(content):
         "summary": content
     }
 
-    print(summary_object)
+    return summary_object
 
 
 def create_notion_page(data: dict):
