@@ -197,7 +197,4 @@ def email_to_notion(email: Email):
 
     if is_newsletter:
         summary_obj = summarise_newsletter(content[500])
-    else:
-        summary_obj = None
-    
-    send_to_notion(summary_obj)
+        send_to_notion(summary_obj)
