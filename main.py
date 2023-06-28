@@ -193,7 +193,7 @@ def email_to_notion(email: Email):
     is_newsletter = json_args["is_newsletter"]
 
     if is_newsletter:
-        summary_obj = summarise_newsletter(content[100])
+        summary_obj = summarise_newsletter(content[500])
     else:
         summary_obj = None
     
