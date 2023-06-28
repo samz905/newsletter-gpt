@@ -170,7 +170,7 @@ def read_root():
 @app.post("/")
 def email_to_notion(email: Email):
     content = email.content
-    query = f"Please check if this email is a newsletter or not: {content[100]} "
+    query = f"Please check if this email is a newsletter or not: {content[:500]} "
 
     messages = [{"role": "user", "content": query}]
 
@@ -196,5 +196,5 @@ def email_to_notion(email: Email):
     is_newsletter = json_args["is_newsletter"]
 
     if is_newsletter:
-        summary_obj = summarise_newsletter(content[500])
+        summary_obj = summarise_newsletter(content[:500])
         send_to_notion(summary_obj)
