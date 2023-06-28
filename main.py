@@ -106,6 +106,9 @@ def summarise_newsletter(content):
         }
     )
 
+    title_json = json.loads(title["choices"][0]["message"]["function_call"]["arguments"])
+    title = title_json["title"]
+
     summary_object = {
         "title": title,
         "summary": content

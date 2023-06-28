@@ -1,15 +1,15 @@
-import openai
-from langchain.chains.summarize import load_summarize_chain
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.docstore.document import Document
-from langchain.chat_models import ChatOpenAI
-import os
-from dotenv import load_dotenv
+# import openai
+# from langchain.chains.summarize import load_summarize_chain
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from langchain.docstore.document import Document
+# from langchain.chat_models import ChatOpenAI
+# import os
+# from dotenv import load_dotenv
 
 
-load_dotenv()
+# load_dotenv()
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 content = """
@@ -76,15 +76,95 @@ content = """
     Once the alg
 """
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
-split_content = text_splitter.split_text(content)
+# text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
+# split_content = text_splitter.split_text(content)
 
-print(len(split_content))
-print(split_content[0])
+# print(len(split_content))
+# print(split_content[0])
 
-llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5, verbose=True)
+# llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5, verbose=True)
 
-docs = [Document(page_content=t) for t in split_content]
+# docs = [Document(page_content=t) for t in split_content]
 
-chain = load_summarize_chain(llm, chain_type="map_reduce")
-chain.run(docs)
+# chain = load_summarize_chain(llm, chain_type="map_reduce")
+# chain.run(docs)
+
+import openai
+import textwrap
+# from langchain.chains.summarize import load_summarize_chain
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from langchain.docstore.document import Document
+# from langchain.chat_models import ChatOpenAI
+import os
+import json
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from pydantic import BaseModel
+import requests
+from datetime import datetime, timezone
+
+load_dotenv()
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+NOTION_KEY = os.getenv("NOTION_KEY")
+NOTION_DATABASE_ID = os.getenv("NOTION_DATABASE_ID")
+
+headers = {
+    "Authorization": "Bearer " + NOTION_KEY,
+    "Content-Type": "application/json",
+    "Notion-Version": "2022-06-28"
+}
+
+models = ["gpt-3.5-turbo-0613", "gpt-3.5-turbo", "gpt-4-0613"]
+
+app = FastAPI()
+
+function_descriptions = [
+    {
+        "name": "categorise_email",
+        "description": "Based on the contents of the email, the function categorises the email as either a newsletter or not",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "is_newsletter": {
+                    "type": "boolean",
+                    "description": "Accepts a true value if the contents of the email is a newsletter"
+                }
+            },
+            "required": ["is_newsletter"]
+        }
+    },
+    {
+        "name": "summary_title",
+        "description": "Based on the summary given in the query, the function creates a title for the summary",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Generated title for the summary containing less than 100 characters"
+                }
+            },
+            "required": ["title"]
+        }
+    }
+]
+
+
+query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {content}"
+messages_title = [{"role": "user", "content": query_title}]
+
+title = openai.ChatCompletion.create(
+    model=models[0],
+    messages=messages_title,
+    temperature=0.5,
+    functions = function_descriptions,
+    function_call={
+        "name": "summary_title"
+    }
+)
+
+title_json = json.loads(title["choices"][0]["message"]["function_call"]["arguments"])
+
+print(title_json["title"])
