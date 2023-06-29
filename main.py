@@ -1,10 +1,9 @@
 import openai
 # import textwrap
-import langchain
-# from langchain.chains.summarize import load_summarize_chain
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from langchain.docstore.document import Document
-# from langchain.chat_models import ChatOpenAI
+from langchain.chains.summarize import load_summarize_chain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.docstore.document import Document
+from langchain.chat_models import ChatOpenAI
 import os
 import json
 from dotenv import load_dotenv
@@ -83,16 +82,16 @@ function_descriptions = [
 
 
 def summarise_newsletter(content):
-    text_splitter = langchain.text_splitter.RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     split_content = text_splitter.split_documents(content)
 
     print(len(split_content))
 
-    llm = langchain.chat_models.ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
+    llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
 
-    docs = [langchain.docstore.document.Document(page_content=t) for t in split_content]
+    docs = [Document(page_content=t) for t in split_content]
 
-    chain = langchain.chains.summarize.load_summarize_chain(llm, chain_type="map_reduce")
+    chain = load_summarize_chain(llm, chain_type="map_reduce")
     summary = chain.run(docs[0])
 
     # print(len(split_content))
