@@ -1,9 +1,9 @@
 import openai
 import textwrap
-# from langchain.chains.summarize import load_summarize_chain
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from langchain.docstore.document import Document
-# from langchain.chat_models import ChatOpenAI
+from langchain.chains.summarize import load_summarize_chain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.docstore.document import Document
+from langchain.chat_models import ChatOpenAI
 import os
 import json
 from dotenv import load_dotenv
@@ -60,6 +60,27 @@ function_descriptions = [
     }
 ]
 
+
+def piece_summary(content):
+    # Split the text into chunks of approximately 500 characters each
+    split_content = textwrap.wrap(content, width=500)
+
+    # Generate prompts for each chunk and summarize them
+    summary = []
+    for chunk in split_content:
+        response = openai.Completion.create(
+            engine="text-davinci-002",
+            prompt=chunk,
+            temperature=0.5,
+            max_tokens=100
+        )
+        print(response.choices[0].text.strip())
+        summary.append(response.choices[0].text.strip())
+
+    # Join the summaries together
+    summary = ' '.join(summary)
+
+
 def summarise_newsletter(content):
     # text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     # split_content = text_splitter.split_documents(content)
@@ -73,27 +94,10 @@ def summarise_newsletter(content):
     # chain = load_summarize_chain(llm, chain_type="map_reduce")
     # summary = chain.run(docs[0])
 
-    # # Split the text into chunks of approximately 500 characters each
-    # split_content = textwrap.wrap(content, width=500)
-
     # print(len(split_content))
+    summary = piece_summary(content)
 
-    # # Generate prompts for each chunk and summarize them
-    # summary = []
-    # for chunk in split_content:
-    #     response = openai.Completion.create(
-    #         engine="text-davinci-002",
-    #         prompt=chunk,
-    #         temperature=0.5,
-    #         max_tokens=100
-    #     )
-    #     print(response.choices[0].text.strip())
-    #     summary.append(response.choices[0].text.strip())
-
-    # # Join the summaries together
-    # summary = ' '.join(summary)
-
-    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {content}"
+    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {summary}"
     messages_title = [{"role": "user", "content": query_title}]
 
     title = openai.ChatCompletion.create(
