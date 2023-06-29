@@ -1,9 +1,9 @@
 import openai
 import textwrap
-# from langchain.chains.summarize import load_summarize_chain
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from langchain.docstore.document import Document
-# from langchain.chat_models import ChatOpenAI
+from langchain.chains.summarize import load_summarize_chain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.docstore.document import Document
+from langchain.chat_models import ChatOpenAI
 import os
 import json
 from dotenv import load_dotenv
