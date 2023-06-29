@@ -41,7 +41,7 @@ sniffio
 SQLAlchemy
 starlette
 tenacity
-tiktoken
+# tiktoken
 tqdm
 typing-inspect
 typing_extensions
