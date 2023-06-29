@@ -1,5 +1,6 @@
 import openai
 import textwrap
+import langchain
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.docstore.document import Document
