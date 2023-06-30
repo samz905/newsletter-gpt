@@ -1,5 +1,5 @@
 import openai
-from langchain.chains.summarize import load_summarize_chain, _load_stuff_chain
+from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import CharacterTextSplitter
 # from langchain.docstore.document import Document
 from langchain.chat_models import ChatOpenAI
@@ -86,7 +86,7 @@ def short_summary(content):
 
     {text}
 
-    SUMMARY IN LESS THAN 500 CHARACTERS:"""
+    SUMMARY OF NEWSLETTER IN LESS THAN 500 CHARACTERS:"""
 
     docs = doc_creator(content)
 
@@ -100,9 +100,11 @@ def short_summary(content):
 
 
 def summarise_newsletter(content):
-    short_summary = short_summary(content)
+    short_sum = short_summary(content)
 
-    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {short_summary}"
+    print(short_sum)
+
+    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {short_sum}"
     messages_title = [{"role": "user", "content": query_title}]
 
     title = openai.ChatCompletion.create(
@@ -118,11 +120,11 @@ def summarise_newsletter(content):
     title_json = json.loads(title["choices"][0]["message"]["function_call"]["arguments"])
     title = title_json["title"]
 
-    final_summary = final_summary(content)
+    final_sum = final_summary(content)
 
     summary_object = {
         "title": title,
-        "summary": final_summary
+        "summary": final_sum
     }
 
     return summary_object
