@@ -91,6 +91,8 @@ def short_summary(content):
 
     docs = doc_creator(content)
 
+    print(docs)
+
     llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
 
     PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
