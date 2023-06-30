@@ -95,7 +95,7 @@ def short_summary(content):
 
     PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
     chain = load_summarize_chain(llm, chain_type="stuff", prompt=PROMPT)
-    summary = chain.run(docs)
+    summary = chain.run(docs[:3])
 
     return summary
 
@@ -184,7 +184,6 @@ def read_root():
 @app.post("/")
 def email_to_notion(email: Email):
     content = email.content
-    print(content)
 
     summary = ""
     summary = short_summary(content)
