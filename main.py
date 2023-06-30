@@ -182,9 +182,9 @@ def read_root():
 def email_to_notion(email: Email):
     content = email.content
 
-    short_summary = short_summary(content)
+    summary = short_summary(content)
 
-    query = f"Please check if this email is a newsletter or not: {short_summary} "
+    query = f"Please check if this email is a newsletter or not: {summary} "
 
     messages = [{"role": "user", "content": query}]
 
