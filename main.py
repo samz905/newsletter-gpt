@@ -66,6 +66,8 @@ def doc_creator(content):
     text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     split_content = text_splitter.split_text(content)
 
+    split_content = split_content[0].split("\n")
+
     docs = text_splitter.create_documents(split_content)
 
     return docs

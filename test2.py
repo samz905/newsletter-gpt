@@ -130,6 +130,9 @@ def doc_creator(content):
     text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     split_content = text_splitter.split_text(content)
 
+    split_content = split_content[0].split("\n")
+    print("split: ", len(split_content))
+
     docs = text_splitter.create_documents(split_content)
 
     return docs
@@ -154,6 +157,8 @@ def short_summary(content):
     SUMMARY OF NEWSLETTER IN LESS THAN 500 CHARACTERS:"""
 
     docs = doc_creator(content)
+
+    print("Docs: ", len(docs))
 
     llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
 
