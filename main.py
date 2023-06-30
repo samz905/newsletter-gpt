@@ -89,7 +89,7 @@ def summarise_newsletter(content):
 
     llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
 
-    docs = [Document(page_content=t) for t in split_content]
+    docs = [Document(page_content=t[0]) for t in split_content]
 
     chain = load_summarize_chain(llm, chain_type="map_reduce")
     summary = chain.run(docs[0])
