@@ -1,9 +1,9 @@
 import openai
+# import textwrap
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.docstore.document import Document
 from langchain.chat_models import ChatOpenAI
-from langchain.prompts import PromptTemplate
 import os
 import json
 from dotenv import load_dotenv
@@ -61,48 +61,43 @@ function_descriptions = [
 ]
 
 
-def doc_creator(content):
+# def piece_summary(content):
+#     # Split the text into chunks of approximately 500 characters each
+#     split_content = textwrap.wrap(content, width=500)
+
+#     # Generate prompts for each chunk and summarize them
+#     summary = []
+#     for chunk in split_content:
+#         response = openai.Completion.create(
+#             engine="text-davinci-002",
+#             prompt=chunk,
+#             temperature=0.5,
+#             max_tokens=100
+#         )
+#         print(response.choices[0].text.strip())
+#         summary.append(response.choices[0].text.strip())
+
+#     # Join the summaries together
+#     summary = ' '.join(summary)
+
+
+def summarise_newsletter(content):
     text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     split_content = text_splitter.split_text(content)
 
-    docs = [Document(page_content=t[0]) for t in split_content]
-
-    return docs
-
-
-def final_summary(content):
-    docs = doc_creator(content)
+    print(len(split_content))
 
     llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
+
+    docs = [Document(page_content=t[0]) for t in split_content]
 
     chain = load_summarize_chain(llm, chain_type="map_reduce")
     summary = chain.run(docs)
 
-    return summary
+    # print(len(split_content))
+    # summary = piece_summary(content)
 
-
-def short_summary(content):
-    prompt_template = """Write a concise summary in less than 500 characters of the following:
-
-    {text}
-
-    SUMMARY IN LESS THAN 500 CHARACTERS:"""
-
-    docs = doc_creator(content)
-
-    llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
-
-    PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
-    chain = load_summarize_chain(llm, chain_type="map_reduce", prompt=PROMPT)
-    summary = chain.run(docs)
-
-    return summary
-
-
-def summarise_newsletter(content):
-    short_summary = short_summary(content)
-
-    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {short_summary}"
+    query_title=f"Please generate a title in less than 100 characters for the following newsletter summary content: {summary[100]}"
     messages_title = [{"role": "user", "content": query_title}]
 
     title = openai.ChatCompletion.create(
@@ -118,11 +113,9 @@ def summarise_newsletter(content):
     title_json = json.loads(title["choices"][0]["message"]["function_call"]["arguments"])
     title = title_json["title"]
 
-    final_summary = final_summary(content)
-
     summary_object = {
         "title": title,
-        "summary": final_summary
+        "summary": content
     }
 
     return summary_object
@@ -181,10 +174,7 @@ def read_root():
 @app.post("/")
 def email_to_notion(email: Email):
     content = email.content
-
-    short_summary = short_summary(content)
-
-    query = f"Please check if this email is a newsletter or not: {short_summary} "
+    query = f"Please check if this email is a newsletter or not: {content[:500]} "
 
     messages = [{"role": "user", "content": query}]
 
@@ -196,6 +186,13 @@ def email_to_notion(email: Email):
             "name": "categorise_email"
         }
     )
+
+    # Another way
+    # response = openai.ChatCompletion.create(
+    #     model="gpt-4-0613",
+    #     messages=messages,
+    #     functions = [function_descriptions[0]]
+    # )
 
     arguments = response.choices[0]["message"]["function_call"]["arguments"]
     json_args = json.loads(arguments)
