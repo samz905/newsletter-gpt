@@ -1,7 +1,7 @@
 import openai
-from langchain.chains.summarize import load_summarize_chain
+from langchain.chains.summarize import load_summarize_chain, _load_stuff_chain
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.docstore.document import Document
+# from langchain.docstore.document import Document
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 import os
@@ -93,7 +93,7 @@ def short_summary(content):
     llm = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
 
     PROMPT = PromptTemplate(template=prompt_template, input_variables=["text"])
-    chain = load_summarize_chain(llm, chain_type="map_reduce", prompt=PROMPT)
+    chain = load_summarize_chain(llm, chain_type="stuff", prompt=PROMPT)
     summary = chain.run(docs)
 
     return summary
@@ -182,6 +182,7 @@ def read_root():
 def email_to_notion(email: Email):
     content = email.content
 
+    summary = ""
     summary = short_summary(content)
 
     query = f"Please check if this email is a newsletter or not: {summary} "
