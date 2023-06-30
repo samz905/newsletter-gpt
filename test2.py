@@ -273,6 +273,7 @@ def email_to_notion(content):
 
     if is_newsletter:
         summary_obj = summarise_newsletter(content)
+        send_to_notion(summary_obj)
     else:
         summary_obj = None
         
