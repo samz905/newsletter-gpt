@@ -65,7 +65,7 @@ def doc_creator(content):
     text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=150)
     split_content = text_splitter.split_text(content)
 
-    docs = [Document(page_content=t[0]) for t in split_content]
+    docs = text_splitter.create_documents(split_content)
 
     return docs
 
