@@ -1,7 +1,7 @@
 import openai
 # import textwrap
 from langchain.chains.summarize import load_summarize_chain
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import CharacterTextSplitter
 from langchain.docstore.document import Document
 from langchain.chat_models import ChatOpenAI
 import os
@@ -82,8 +82,8 @@ function_descriptions = [
 
 
 def summarise_newsletter(content):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=150)
-    split_content = text_splitter.split_documents(content)
+    text_splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=150)
+    split_content = text_splitter.split_text(content)
 
     print(len(split_content))
 
