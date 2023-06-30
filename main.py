@@ -1,7 +1,6 @@
 import openai
 from langchain.chains.summarize import load_summarize_chain
 from langchain.text_splitter import CharacterTextSplitter
-# from langchain.docstore.document import Document
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 import os
@@ -85,8 +84,12 @@ def final_summary(content):
 
 
 def short_summary(content):
-    prompt_template = """Write a concise summary in less than 500 characters of the following:
+    prompt_template = """Write a concise summary in less than 500 characters of the text given below. If it is a 
+    newsletter, refer to it as a newsletter. If it isn't a newsletter, simply make summary say "This isn't a newsletter".
+    If it is a newsletter, the summary should be less than 500 characters long and refer to the original text as a 
+    newsletter, otherwise simply output the summary as "This isn't a newsletter". 
 
+    TEXT: 
     {text}
 
     SUMMARY OF NEWSLETTER IN LESS THAN 500 CHARACTERS:"""
