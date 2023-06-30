@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import requests
 from datetime import datetime, timezone
+import logging
 
 load_dotenv()
 
@@ -183,6 +184,7 @@ def read_root():
 @app.post("/")
 def email_to_notion(email: Email):
     content = email.content
+    print(content)
 
     summary = ""
     summary = short_summary(content)
