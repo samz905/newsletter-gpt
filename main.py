@@ -138,7 +138,7 @@ def generate_short_summary(content):
         ChatOpenAI(model=models[0], temperature=0.5),
         chain_type="stuff",
         prompt=PromptTemplate(template=prompt_template, input_variables=["text"])
-    ).run(doc_creator(content))
+    ).run(doc_creator(content)[:3])
 
     return summary
 
