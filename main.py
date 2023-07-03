@@ -81,7 +81,6 @@ def doc_creator(content):
 
     # Create documents from the split content
     docs = text_splitter.create_documents(split_content)
-    print(docs)
 
     return docs
 
