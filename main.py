@@ -99,7 +99,7 @@ def generate_summary(content):
     documents = doc_creator(content)
 
     # Initialize the ChatOpenAI model
-    model = ChatOpenAI(model="gpt-3.5-turbo-0613", temperature=0.5)
+    model = ChatOpenAI(model=models[-1], temperature=0.5)
 
     # Load and initialize the summarization chain
     chain = load_summarize_chain(model, chain_type="map_reduce")
@@ -134,7 +134,7 @@ def generate_short_summary(content):
 
     # Generate the summary using the load_summarize_chain function
     summary = load_summarize_chain(
-        ChatOpenAI(model=models[0], temperature=0.5),
+        ChatOpenAI(model=models[-1], temperature=0.5),
         chain_type="stuff",
         prompt=PromptTemplate(template=prompt_template, input_variables=["text"])
     ).run(doc_creator(content)[:3])
@@ -153,7 +153,7 @@ def summarise_newsletter(content):
 
     # Generate the title using an AI model
     title = openai.ChatCompletion.create(
-        model=models[0],
+        model=models[-1],
         messages=messages_title,
         temperature=0.5,
         functions=function_descriptions,
@@ -279,7 +279,7 @@ def email_to_notion(email: Email):
     
     # Make a request to OpenAI chat completion
     response = openai.ChatCompletion.create(
-        model=models[0],
+        model=models[-1],
         messages=messages,
         functions=function_descriptions,
         function_call={"name": "categorise_email"}
