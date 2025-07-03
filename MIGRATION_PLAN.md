@@ -10,23 +10,23 @@ Transform from Zapier-based immediate processing to weekly digest system with fr
 
 ```mermaid
 graph TD
-    A[📧 Email Servers] -->|IMAP Every 2hrs| B[Email Collector]
-    B --> C[(SQLite Database)]
+    A[⏰ APScheduler] -->|Every 2hrs| B[Email Collector]
+    A -->|Sunday 8 PM| E[Weekly Processor]
     
-    D[⏰ APScheduler] -->|Every 2hrs| B
-    D -->|Sunday 8 PM| E[Weekly Processor]
+    B -->|IMAP Fetch| C[📧 Email Servers]
+    B --> D[(SQLite Database)]
     
-    C --> E
-    E --> F[Text Cleaner]
+    D --> E
+    E --> F[Data Cleaner]
     F --> G[LLM]
     G --> H[Weekly Digest]
     H --> I[📄 Notion Pages]
     
     J[👤 User] --> I
     
-    style A fill:#e1f5fe
-    style C fill:#f3e5f5
-    style D fill:#fff3e0
+    style A fill:#fff3e0
+    style C fill:#e1f5fe
+    style D fill:#f3e5f5
     style G fill:#e8f5e8
     style I fill:#fce4ec
 ```
@@ -37,7 +37,7 @@ graph TD
 - **⏰ Scheduling**: APScheduler for automated collection & weekly processing  
 - **🤖 AI Processing**: Free DeepSeek model via OpenRouter for cost-effective summaries
 - **📄 Output**: Rich weekly digest pages in Notion
-- **🖥️ Control**: FastAPI server for monitoring and manual triggers
+- **🖥️ Backend**: FastAPI server facilitating the workflow
 
 ---
 
