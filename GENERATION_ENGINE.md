@@ -20,12 +20,11 @@ unsubscribe_keywords = [
 
 #### 1.2.1 Email to Structured Data Conversion
 **Steps:**
-1. **LLM Newsletter Identification** - Confirm which emails are actual newsletters based on 1.1
-2. **Content Extraction** - Extract clean text from confirmed newsletters
-3. **Summary Generation** - Create individual summaries for each newsletter
-4. **Genre Classification** - Assign genre tags from approved list
-5. **Metadata Enrichment** - Add complete metadata set
-6. **Langchain Document Creation** - Create Document objects with text and metadata
+1. **Content Extraction** - Extract clean text from confirmed newsletters
+2. **LLM Summary Generation** - Create individual summaries for each newsletter
+3. **LLM Genre Classification** - Assign genre tags from approved list
+4. **Metadata Enrichment** - Add complete metadata set
+5. **Langchain Document Creation** - Create Document objects with text and metadata
 
 #### Genre Tags (Only These):
 ```python
