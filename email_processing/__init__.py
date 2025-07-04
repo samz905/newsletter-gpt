@@ -1,0 +1,1 @@
+# Email processing module for IMAP connection and fetching 

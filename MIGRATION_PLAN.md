@@ -38,18 +38,18 @@ graph TD
 ### Task 1.1: OpenRouter Integration
 **Goal:** Replace OpenAI with free DeepSeek model
 
-- [ ] Update OpenAI client to use OpenRouter endpoint
-- [ ] Test basic chat completion with DeepSeek
-- [ ] Create simple wrapper function
+- [x] Update OpenAI client to use OpenRouter endpoint
+- [x] Test basic chat completion with DeepSeek
+- [x] Create simple wrapper function
 
 **Test:** `python -c "from openai import OpenAI; client = OpenAI(base_url='https://openrouter.ai/api/v1', api_key='key'); print('Working!')"`
 
 ### Task 1.2: Simple Email Fetcher
 **Goal:** Basic IMAP email collection for weekly processing
 
-- [ ] Create IMAP email fetcher (basic connection and fetch)
-- [ ] Fetch emails from past 7 days only
-- [ ] Basic error handling for connection issues
+- [x] Create IMAP email fetcher (basic connection and fetch)
+- [x] Fetch emails from past 7 days only
+- [x] Basic error handling for connection issues
 
 **Test:** `python email_fetcher.py --test`
 
@@ -60,12 +60,14 @@ graph TD
 ### Task 2.1: Complete Weekly Processor
 **Goal:** Single job that fetches, filters, and summarizes
 
-- [ ] Fetch emails from past 7 days via IMAP
-- [ ] Apply primitive filtering (unsubscribe detection)
-- [ ] Send filtered subjects to LLM for newsletter identification
-- [ ] Clean content of confirmed newsletters
-- [ ] Generate individual summaries with LLM
-- [ ] Combine into weekly digest format
+- [x] Fetch emails from past 7 days via IMAP
+- [x] Apply primitive filtering (unsubscribe detection)
+- [x] Send filtered subjects (and first 3 semantic lines) to LLM for newsletter identification
+- [x] Clean content of confirmed newsletters
+- [x] Generate individual summaries with LLM
+- [x] Combine into weekly digest format
+- [x] **BONUS:** Modularized into atomic components (email_processing/, processors/)
+- [x] **BONUS:** Creates actual digest files in digests/ directory
 
 **Reference:** DATA_PREPROCESSING.md
 
