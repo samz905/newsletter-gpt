@@ -36,10 +36,10 @@ graph TD
 ## Phase 1: Foundation
 
 ### Task 1.1: OpenRouter Integration
-**Goal:** Replace OpenAI with free DeepSeek model
+**Goal:** Replace OpenAI with free Gemini model
 
 - [x] Update OpenAI client to use OpenRouter endpoint
-- [x] Test basic chat completion with DeepSeek
+- [x] Test basic chat completion with Gemini
 - [x] Create simple wrapper function
 
 **Test:** `python -c "from openai import OpenAI; client = OpenAI(base_url='https://openrouter.ai/api/v1', api_key='key'); print('Working!')"`

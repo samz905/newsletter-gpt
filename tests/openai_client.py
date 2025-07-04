@@ -18,7 +18,7 @@ def get_openai_client():
     
     return client
 
-def chat_completion(messages, model="deepseek/deepseek-chat-v3-0324:free"):
+def chat_completion(messages, model="google/gemini-2.0-flash-exp:free"):
     """Simple wrapper for chat completion"""
     client = get_openai_client()
     
