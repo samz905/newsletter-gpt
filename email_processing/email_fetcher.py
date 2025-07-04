@@ -34,9 +34,9 @@ class EmailFetcher:
         if not email_ids:
             return []
         
-        # Parse emails (limit to first 50 for performance)
+        # Parse emails 
         emails = []
-        for email_id in email_ids[:50]:
+        for email_id in email_ids:
             parsed_email = self.parser.parse_email(email_id)
             if parsed_email:
                 emails.append(parsed_email)

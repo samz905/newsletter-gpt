@@ -31,9 +31,12 @@ Content: {newsletter['cleaned_body']}
 Create a summary that:
 1. Captures the main topic/theme
 2. Highlights key points or insights
-3. Is valuable for a weekly digest
+3. Includes all necessary details
+4. Is valuable for a weekly digest
 
 Format as a brief, engaging summary that meaningfully captures the content of the newsletter.
+
+Simply return "Not a newsletter" if the content is not a newsletter.
 """
             
             summary_text = chat_completion([{"role": "user", "content": prompt}])

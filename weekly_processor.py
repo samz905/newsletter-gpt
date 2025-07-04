@@ -100,6 +100,16 @@ class WeeklyProcessor:
             # 7. Save digest to file (always create the file)
             filename = self.save_digest_to_file(digest)
             
+            # Print processing statistics
+            print("\n📊 PROCESSING SUMMARY")
+            print("=" * 30)
+            print(f"📥 Total emails fetched: {len(emails)}")
+            print(f"🔍 After primitive filtering: {len(filtered_emails)}")
+            print(f"🤖 Newsletters identified: {len(newsletter_emails)}")
+            print(f"📝 Summaries generated: {len(summaries)}")
+            print(f"📄 Digest file created: {filename}")
+            print("=" * 30)
+            
             if dry_run:
                 print("\n" + "="*50)
                 print("DRY RUN - WEEKLY DIGEST PREVIEW")
@@ -137,3 +147,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+ 

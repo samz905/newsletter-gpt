@@ -4,7 +4,7 @@ from typing import List, Dict
 class ContentCleaner:
     """Clean and prepare newsletter content for summarization"""
     
-    def __init__(self, max_content_length: int = 1000):
+    def __init__(self, max_content_length: int = 5000):
         self.max_content_length = max_content_length
     
     def clean_newsletters(self, newsletters: List[Dict]) -> List[Dict]:

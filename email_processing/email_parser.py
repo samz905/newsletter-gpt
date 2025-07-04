@@ -32,7 +32,7 @@ class EmailParser:
                 'subject': subject,
                 'sender': sender,
                 'date': date,
-                'body': body[:500]  # Truncate body for initial processing
+                'body': body  # Don't truncate body for proper filtering
             }
             
         except Exception as e:
