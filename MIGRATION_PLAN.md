@@ -20,7 +20,7 @@ graph TD
     H --> I[📊 SQLite Database]
     
     D -->|Query Last 7 Days| I
-    I --> J[Genre Grouping]
+    D --> J[Genre Grouping]
     J --> K[Unified Summaries]
     K --> L[📄 Weekly Digest]
     L --> M[Notion Integration]
