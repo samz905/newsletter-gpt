@@ -13,6 +13,7 @@ A simple personal newsletter processing system that automatically fetches, proce
 
 ## Architecture
 ```mermaid
+graph TD;
     A[⏰ Daily Scheduler] -->|8 PM Daily| B[Email Daily Processor]
     C[⏰ Weekly Scheduler] -->|Sunday 7 AM| D[Weekly Digest Generator]
     
