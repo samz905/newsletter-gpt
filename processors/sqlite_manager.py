@@ -74,15 +74,8 @@ class SQLiteManager:
             return False
     
     def store_processed_newsletters(self, processed_newsletters: List[Dict]) -> bool:
-        """
-        Store processed newsletters as Langchain Documents
+        """Store processed newsletters as Langchain Documents"""
         
-        Args:
-            processed_newsletters: List of processed newsletters from BatchProcessor
-            
-        Returns:
-            bool: Success status
-        """
         if not self.connection:
             print("❌ No database connection")
             return False
@@ -124,15 +117,7 @@ class SQLiteManager:
             return False
     
     def create_documents(self, processed_newsletters: List[Dict]) -> List[Document]:
-        """
-        Create Langchain Document objects from processed newsletters
-        
-        Args:
-            processed_newsletters: List of processed newsletters
-            
-        Returns:
-            List[Document]: Langchain Document objects
-        """
+        """Create Document objects from processed newsletters"""    
         documents = []
         
         for newsletter in processed_newsletters:
@@ -153,16 +138,7 @@ class SQLiteManager:
         return documents
     
     def get_newsletters_by_date_range(self, start_date: str, end_date: str) -> List[Dict]:
-        """
-        Get newsletters within date range
-        
-        Args:
-            start_date: Start date (YYYY-MM-DD format)
-            end_date: End date (YYYY-MM-DD format)
-            
-        Returns:
-            List of newsletters
-        """
+        """Get newsletters within date range"""
         if not self.connection:
             print("❌ No database connection")
             return []
@@ -186,16 +162,7 @@ class SQLiteManager:
             return []
     
     def get_newsletters_by_genre(self, genre: str, days: int = 7) -> List[Dict]:
-        """
-        Get newsletters by genre from last N days
-        
-        Args:
-            genre: Genre to filter by
-            days: Number of days to look back
-            
-        Returns:
-            List of newsletters
-        """
+        """Get newsletters by genre from last N days"""
         if not self.connection:
             print("❌ No database connection")
             return []

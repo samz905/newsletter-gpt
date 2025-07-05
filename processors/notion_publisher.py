@@ -8,9 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class NotionPublisher:
-    """
-    Publisher for weekly digests to Notion database
-    """
+    """Publisher for weekly digests to Notion database"""
     
     def __init__(self):
         """Initialize Notion client"""
@@ -24,16 +22,7 @@ class NotionPublisher:
         
         self.client = Client(auth=self.notion_token)
     
-    def publish_weekly_digest(self, digest_data: Dict) -> Optional[str]:
-        """
-        Publish weekly digest to Notion database
-        
-        Args:
-            digest_data: Dictionary containing digest content and metadata
-            
-        Returns:
-            Page ID if successful, None if failed
-        """
+    def publish_weekly_digest(self, digest_data: Dict) -> Optional[str]:        
         try:
             # Extract digest information
             week_start = digest_data.get('week_start')

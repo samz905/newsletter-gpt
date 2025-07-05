@@ -11,12 +11,8 @@ class DailyNewsletterProcessor:
         self.content_processor = ContentProcessor(model=model)
     
     def run_daily_processing(self) -> Dict:
-        """
-        Execute complete daily newsletter processing workflow
-        
-        Returns:
-            Dict: Processing results and statistics
-        """
+        """Execute complete daily newsletter processing workflow"""
+
         print("🚀 Starting Daily Newsletter Processing")
         print("=" * 60)
         
@@ -82,12 +78,7 @@ class DailyNewsletterProcessor:
             return results
     
     def _run_daily_processor(self) -> Optional[List[Dict]]:
-        """
-        Run Daily Email Ingestion
-        
-        Returns:
-            List of newsletter candidates or None if failed
-        """
+        """Run Daily Email Ingestion"""
         try:
             newsletter_candidates = self.daily_processor.process_daily_emails()
             
@@ -103,15 +94,7 @@ class DailyNewsletterProcessor:
             return None
     
     def _run_content_processor(self, newsletter_candidates: List[Dict]) -> bool:
-        """
-        Run Daily Content Processing
-        
-        Args:
-            newsletter_candidates: Newsletter candidates
-            
-        Returns:
-            bool: Success status
-        """
+        """Run Daily Content Processing"""
         try:
             success = self.content_processor.process_newsletter_candidates(newsletter_candidates)
             

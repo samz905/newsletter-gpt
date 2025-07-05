@@ -12,6 +12,8 @@ from config import (
 
 
 class BatchProcessor:
+    """Uses LLM to analyze newsletters and generate summaries."""
+
     def __init__(self, model: str = None):
         self.model = model or DEFAULT_MODEL
         self.batch_size = BATCH_SIZE
@@ -21,15 +23,8 @@ class BatchProcessor:
         self.approved_genres = APPROVED_GENRES
     
     def process_newsletter_batches(self, newsletters: List[Dict]) -> List[Dict]:
-        """
-        Process newsletters in batches with LLM analysis
+        """Process newsletters in batches with LLM analysis"""
         
-        Args:
-            newsletters: List of newsletter candidates
-            
-        Returns:
-            List of processed newsletters with summaries and genres
-        """
         print(f"🤖 Starting batch processing with {self.model}")
         print(f"📊 Processing {len(newsletters)} newsletters in batches of {self.batch_size}")
         

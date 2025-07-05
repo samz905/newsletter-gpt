@@ -6,7 +6,7 @@ from .email_parser import EmailParser
 
 class EmailFetcher:
     """Main email fetcher that orchestrates email processing"""
-    
+
     def __init__(self, email_address: str, password: str, 
                  imap_server: str = "imap.gmail.com", port: int = 993):
         self.connector = ImapConnector(email_address, password, imap_server, port)

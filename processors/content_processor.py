@@ -13,15 +13,8 @@ class ContentProcessor:
         self.sqlite_manager = SQLiteManager()
     
     def process_newsletter_candidates(self, newsletter_candidates: List[Dict]) -> bool:
-        """
-        Convert newsletter candidates to structured data
+        """Convert newsletter candidates to structured data"""
         
-        Args:
-            newsletter_candidates: List of newsletter candidates
-            
-        Returns:
-            bool: Success status
-        """
         print("🚀 Starting Content Processing")
         print(f"📊 Processing {len(newsletter_candidates)} newsletter candidates")
         

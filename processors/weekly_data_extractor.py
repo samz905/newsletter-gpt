@@ -27,15 +27,7 @@ class WeeklyDataExtractor:
         self.approved_genres = APPROVED_GENRES
     
     def extract_weekly_data(self, days_back: int = 7) -> Dict[str, List[Document]]:
-        """
-        Extract and group newsletter data from the last N days by genre
-        
-        Args:
-            days_back: Number of days to look back (default: 7)
-            
-        Returns:
-            Dict[genre, List[Document]]: Newsletters grouped by genre
-        """
+        """Extract and group newsletter data from the last N days by genre"""
         print(f"📊 Extracting newsletter data from last {days_back} days...")
         
         try:

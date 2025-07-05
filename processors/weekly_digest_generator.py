@@ -34,15 +34,7 @@ class WeeklyDigestGenerator:
             return WEEKLY_DIGEST_GENRE_INTERVAL, WEEKLY_DIGEST_RETRY_INTERVAL
     
     def generate_weekly_digest(self, days_back: int = 7) -> Optional[str]:
-        """
-        Generate complete weekly digest from last N days of newsletters
-        
-        Args:
-            days_back: Number of days to look back (default: 7)
-            
-        Returns:
-            str: Path to generated digest file, or None if failed
-        """
+        """Generate complete weekly digest from last N days of newsletters"""
         print(f"📰 Generating weekly digest from last {days_back} days...")
         
         try:
