@@ -1,16 +1,19 @@
 import re
 from typing import List, Dict
 from openai_client import chat_completion
+from config import DEFAULT_MODEL, BATCH_SIZE
 
 class NewsletterIdentifier:
     """Use LLM to identify which emails are actually newsletters"""
     
-    def __init__(self, batch_size: int = 10):
-        self.batch_size = batch_size
+    def __init__(self):
+        self.batch_size = BATCH_SIZE
+        self.model = DEFAULT_MODEL
     
     def identify_newsletters(self, emails: List[Dict]) -> List[Dict]:
         """Use LLM to identify which emails are actually newsletters"""
         print("🤖 Using LLM for newsletter identification...")
+        print(f"🔧 Using model: {self.model}")
         
         newsletter_emails = []
         
@@ -60,7 +63,7 @@ Please respond with ONLY the numbers of emails that are newsletters (e.g., "1, 3
 """
         
         try:
-            response = chat_completion([{"role": "user", "content": prompt}])
+            response = chat_completion([{"role": "user", "content": prompt}], model=self.model)
             return self._parse_llm_response(response, batch)
         except Exception as e:
             print(f"❌ LLM identification error: {e}")

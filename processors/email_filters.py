@@ -1,4 +1,5 @@
 from typing import List, Dict
+from config import UNSUBSCRIBE_KEYWORDS
 
 class EmailFilters:
     """Handle primitive email filtering to remove obvious non-newsletters"""
@@ -15,11 +16,8 @@ class EmailFilters:
             'transaction completed', 'payment failed', 'card declined'
         ]
         
-        # Unsubscribe detection keywords
-        self.unsubscribe_keywords = [
-            'unsubscribe', 'opt out', 'opt-out', 'remove me', 'stop emails',
-            'manage preferences', 'email preferences', 'subscription preferences'
-        ]
+        # Use exact unsubscribe keywords from Generation Engine spec
+        self.unsubscribe_keywords = UNSUBSCRIBE_KEYWORDS
     
     def apply_primitive_filtering(self, emails: List[Dict]) -> List[Dict]:
         """Apply basic filtering to remove obvious non-newsletters"""

@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from config import DEFAULT_MODEL
 
 load_dotenv()
 
@@ -18,8 +19,11 @@ def get_openai_client():
     
     return client
 
-def chat_completion(messages, model="google/gemini-2.0-flash-exp:free"):
-    """Simple wrapper for chat completion"""
+def chat_completion(messages, model=None):
+    """Simple wrapper for chat completion with centralized model config"""
+    if model is None:
+        model = DEFAULT_MODEL
+        
     client = get_openai_client()
     
     completion = client.chat.completions.create(
@@ -37,6 +41,6 @@ if __name__ == "__main__":
     
     try:
         response = chat_completion(test_messages)
-        print(f"Test successful: {response}")
+        print(f"Test successful with model {DEFAULT_MODEL}: {response}")
     except Exception as e:
         print(f"Test failed: {e}") 

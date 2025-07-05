@@ -9,6 +9,10 @@ class EmailSearcher:
     def __init__(self, mail_connection: imaplib.IMAP4_SSL):
         self.mail = mail_connection
     
+    def search_last_24_hours(self) -> List[bytes]:
+        """Search for emails from the last 24 hours (for daily processing)"""
+        return self.search_last_n_days(days=1)
+    
     def search_last_n_days(self, days: int = 7) -> List[bytes]:
         """Search for emails from the last N days"""
         if not self.mail:

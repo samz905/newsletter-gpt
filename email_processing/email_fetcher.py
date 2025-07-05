@@ -23,6 +23,26 @@ class EmailFetcher:
         self.parser = EmailParser(connection)
         return True
     
+    def fetch_emails_from_last_24_hours(self) -> List[Dict]:
+        """Fetch emails from the last 24 hours (for daily processing)"""
+        if not self.searcher or not self.parser:
+            print("❌ Email fetcher not properly initialized")
+            return []
+        
+        # Search for emails from last 24 hours
+        email_ids = self.searcher.search_last_24_hours()
+        if not email_ids:
+            return []
+        
+        # Parse emails
+        emails = []
+        for email_id in email_ids:
+            parsed_email = self.parser.parse_email(email_id)
+            if parsed_email:
+                emails.append(parsed_email)
+        
+        return emails
+    
     def fetch_emails_from_last_7_days(self) -> List[Dict]:
         """Fetch emails from the past 7 days"""
         if not self.searcher or not self.parser:
