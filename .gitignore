@@ -3,3 +3,7 @@
 .env
 .DS_Store
 .cursor/
+__pycache__/
+processors/__pycache__/
+email_processor/__pycache__/
+tests/__pycache__/
