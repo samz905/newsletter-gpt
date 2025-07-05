@@ -245,7 +245,7 @@ def main():
     """Run complete workflow test: real emails → filtering → 10 newsletters → LLM processing → summaries/genres"""
     print("🧪 Testing Complete Real Workflow: Email Fetching → Processing → Results")
     print("=" * 80)
-    
+
     # Basic configuration tests
     test_configuration()
     

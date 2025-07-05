@@ -42,6 +42,16 @@ APPROVED_GENRES = [
 # Database Configuration
 DATABASE_PATH = "data/newsletters.db"
 
+# Weekly Digest Rate Limiting Configuration
+WEEKLY_DIGEST_GENRE_INTERVAL = 900  # 15 minutes between genre processing (seconds)
+WEEKLY_DIGEST_RETRY_ATTEMPTS = 2  # 2 retries per failed genre
+WEEKLY_DIGEST_RETRY_INTERVAL = 300  # 5 minutes between retries (seconds)
+
+# Test Mode Configuration (set to True for faster testing)
+WEEKLY_DIGEST_TEST_MODE = False  # When True, uses shorter intervals for testing
+WEEKLY_DIGEST_TEST_GENRE_INTERVAL = 60  # 1 minute between genres in test mode
+WEEKLY_DIGEST_TEST_RETRY_INTERVAL = 30  # 30 seconds between retries in test mode
+
 # Scheduler Configuration
 DAILY_PROCESSING_TIME = "20:00"  # 8 PM daily
 WEEKLY_DIGEST_TIME = "07:00"     # Sunday 7 AM

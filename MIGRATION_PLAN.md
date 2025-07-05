@@ -66,80 +66,102 @@ graph TD
 
 - [x] Create `processors/` module with:
   - [x] `email_filters.py` - Primitive filtering
-  - [x] `newsletter_identifier.py` - LLM identification
   - [x] `content_cleaner.py` - Content cleaning
   - [x] `summary_generator.py` - Summary generation
   - [x] `digest_formatter.py` - Weekly digest formatting
 
 ---
 
-## Phase 2: Daily Processing System
+## Phase 2: Daily Processing System ✅ COMPLETE
 
-### Task 2.1: Database Infrastructure
-**Goal:** SQLite storage with Langchain Document objects
+### Task 2.1: Database Infrastructure ✅ COMPLETE
+**Goal:** SQLite storage with Document objects
 
-- [ ] Create `SQLiteManager` for database operations
-- [ ] Design newsletter schema with genre classification
-- [ ] Implement Langchain Document storage and retrieval
-- [ ] Add proper indexing for date, genre, and source queries
+- [x] Create `SQLiteManager` for database operations ✅
+- [x] Design newsletter schema with genre classification ✅
+- [x] Implement Document storage and retrieval ✅
+- [x] Add proper indexing for date, genre queries ✅
 
-### Task 2.2: Batch Processing Engine
+**Implemented:** `processors/sqlite_manager.py` with full database operations, exact schema from Generation Engine spec, and Document object creation.
+
+### Task 2.2: Batch Processing Engine ✅ COMPLETE
 **Goal:** Efficient LLM processing with rate limiting
 
-- [ ] Create `BatchProcessor` with configurable batch sizes
-- [ ] Implement rate limiting (1 hour between batches, 10-minute retries)
-- [ ] Structured JSON output for clean data extraction
-- [ ] Error handling and logging for batch failures
+- [x] Create `BatchProcessor` with configurable batch sizes ✅
+- [x] Implement rate limiting (1 hour between batches, 10-minute retries) ✅
+- [x] Structured JSON output for clean data extraction ✅
+- [x] Error handling and logging for batch failures ✅
 
-### Task 2.3: Email Daily Processor
+**Implemented:** `processors/batch_processor.py` with exact batch configuration from Generation Engine spec and comprehensive error handling.
+
+### Task 2.3: Email Daily Processor ✅ COMPLETE
 **Goal:** Daily email ingestion system
 
-- [ ] Create `EmailDailyProcessor` for 24-hour email fetching
-- [ ] Integrate primitive filtering with unsubscribe detection
-- [ ] Batch process newsletters (10 per LLM call)
-- [ ] Store processed newsletters in SQLite with genre classification
-- [ ] Schedule daily processing at 8 PM
+- [x] Create `EmailDailyProcessor` for 24-hour email fetching ✅
+- [x] Integrate primitive filtering with unsubscribe detection ✅
+- [x] Batch process newsletters (10 per LLM call) ✅
+- [x] Store processed newsletters in SQLite with genre classification ✅
+- [x] Create `DailyNewsletterProcessor` integration ✅
 
-**Test:** `python email_daily_processor.py --test-batch`
+**Implemented:** Complete Phase 1 from Generation Engine spec with `processors/email_daily_processor.py`, `processors/content_processor.py`, and `processors/daily_newsletter_processor.py`.
+
+**Test:** `python processors/daily_newsletter_processor.py` ✅ WORKING
 
 ---
 
-## Phase 3: Weekly Digest System
+## Phase 3: Weekly Digest System ✅ COMPLETE
 
-### Task 3.1: Weekly Digest Generator
+### Task 3.1: Weekly Digest Generator ✅ COMPLETE
 **Goal:** Generate comprehensive weekly digests from SQLite data
 
-- [ ] Create `WeeklyDigestGenerator` to query last 7 days
-- [ ] Group newsletters by genre for organized sections
-- [ ] Generate unified summaries for each genre
-- [ ] Create comprehensive weekly digest format
-- [ ] Include metadata (source count, date range, total newsletters)
+- [x] Create `WeeklyDigestGenerator` to query last 7 days ✅
+- [x] Group newsletters by genre for organized sections ✅
+- [x] Generate unified summaries for each genre ✅
+- [x] Create comprehensive weekly digest format ✅
+- [x] Include metadata (date range, total newsletters) ✅
+- [x] Implement rate limiting for API compliance ✅
 
-### Task 3.2: Langchain Document Manager
+**Implemented:** `processors/weekly_digest_generator.py` with sophisticated rate limiting (15 min between genres, 5 min retry intervals) and comprehensive digest generation.
+
+### Task 3.2: Weekly Data Extraction ✅ COMPLETE
 **Goal:** Efficient document storage and retrieval
 
-- [ ] Create `LangchainDocumentManager` for document operations
-- [ ] Implement document creation with proper metadata
-- [ ] Add query capabilities for date ranges and genres
-- [ ] Optimize for weekly digest generation workflows
+- [x] Create `WeeklyDataExtractor` for document operations ✅
+- [x] Implement document creation with proper metadata ✅
+- [x] Add query capabilities for date ranges and genres ✅
+- [x] Optimize for weekly digest generation workflows ✅
 
-### Task 3.3: Scheduling Integration
-**Goal:** Coordinate daily and weekly processes
+**Implemented:** `processors/weekly_data_extractor.py` with genre-based data grouping and Document object management.
 
-- [ ] Setup APScheduler with dual schedules:
-  - [ ] Daily processing at 8 PM
-  - [ ] Weekly digest generation on Sunday 7 AM
-- [ ] Add comprehensive logging for both processes
-- [ ] Handle errors gracefully with email notifications
-- [ ] Prevent overlapping processes
+### Task 3.3: Centralized Configuration ✅ COMPLETE
+**Goal:** Centralized configuration management
 
-**Test:** `python weekly_digest_generator.py --test-last-week`
+- [x] Create `config.py` with all configurable parameters ✅
+- [x] Implement batch processing configuration ✅
+- [x] Add weekly digest rate limiting configuration ✅
+- [x] Test mode support for development ✅
+
+**Implemented:** Complete centralized configuration in `config.py` with all Generation Engine specifications and rate limiting parameters.
+
+**Test:** `python processors/weekly_digest_generator.py` ✅ WORKING
 
 ---
 
 ## Phase 4: Integration & Deployment
 
-### Task 4.1: Notion Integration
+### Task 4.1: Scheduler Automation
+**Goal:** Automated daily and weekly processing
+
+- [ ] Setup APScheduler with dual schedules:
+  - [ ] Daily processing at 8 PM
+  - [ ] Weekly digest generation on Sunday 7 AM
+- [ ] Add comprehensive logging for both processes
+- [ ] Handle errors gracefully with notifications
+- [ ] Prevent overlapping processes
+
+**Status:** All components ready, need scheduler implementation
+
+### Task 4.2: Notion Integration
 **Goal:** Create beautiful weekly digest pages in Notion
 
 - [ ] Integrate with Notion API for weekly digests
@@ -148,54 +170,39 @@ graph TD
 - [ ] Add week date range headers and statistics
 - [ ] Error handling for API limits and retries
 
-### Task 4.2: Configuration & Rate Limiting
-**Goal:** Production-ready configuration
+**Status:** Optional integration for publishing digests
 
-- [ ] Create configuration management system
-- [ ] Implement batch processing configuration:
-  - [ ] BATCH_SIZE = 10 newsletters per LLM call
-  - [ ] BATCH_INTERVAL = 3600 seconds (1 hour)
-  - [ ] RETRY_ATTEMPTS = 3 with 600-second intervals
-- [ ] Add environment-specific settings
-- [ ] Database backup and recovery procedures
+### Task 4.3: Production Deployment
+**Goal:** Production-ready deployment
 
-### Task 4.3: Final Integration
-**Goal:** Complete automated system
-
-- [ ] Integrate all components into unified system
 - [ ] Create startup and monitoring scripts
-- [ ] Test end-to-end daily + weekly workflow
+- [ ] Environment-specific settings refinement
+- [ ] Database backup and recovery procedures
 - [ ] Deploy with proper error handling and alerting
+- [ ] End-to-end testing automation
 
-**Test:** `python run.py --test-full-cycle && python run.py --start`
-
----
+**Status:** Production hardening and deployment automation
 
 ## Quick Start Commands
 
 ```bash
-# Setup
-pip install openai beautifulsoup4 apscheduler requests langchain sqlite3
-cp config_example.py config.py
-# Edit config.py with your credentials
+# Setup environment
+pip install openai beautifulsoup4 python-dotenv requests sqlite3
+# Create .env file with EMAIL_ADDRESS, EMAIL_PASSWORD, OPENROUTER_API_KEY
 
 # Initialize database
-python -c "from database.sqlite_manager import SQLiteManager; SQLiteManager().create_tables()"
+python -c "from processors.sqlite_manager import SQLiteManager; m=SQLiteManager(); m.connect(); m.create_tables(); m.disconnect()"
 
-# Test components
-python email_processing/email_fetcher.py --test
-python processors/batch_processor.py --test-batch
-python email_daily_processor.py --test-batch
-python weekly_digest_generator.py --test-last-week
+# Test components (all working)
+python processors/batch_processor.py              # Test batch processing
+python processors/daily_newsletter_processor.py  # Test complete daily workflow
+python processors/weekly_digest_generator.py     # Test weekly digest generation
 
-# Test full workflow
-python run.py --test-full-cycle
-
-# Start daily + weekly automation
-python run.py --start
+# Current status: All Generation Engine components complete ✅
+# Remaining: Scheduler automation and optional Notion integration
 ```
 
-## Database Schema
+## Database Schema ✅ IMPLEMENTED
 
 ```sql
 CREATE TABLE newsletters (
@@ -204,7 +211,6 @@ CREATE TABLE newsletters (
     sender TEXT NOT NULL,
     subject TEXT NOT NULL,
     summary TEXT NOT NULL,
-    source TEXT NOT NULL,
     genre TEXT NOT NULL,
     word_count INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -212,19 +218,28 @@ CREATE TABLE newsletters (
 
 CREATE INDEX idx_newsletters_date ON newsletters(date);
 CREATE INDEX idx_newsletters_genre ON newsletters(genre);
-CREATE INDEX idx_newsletters_source ON newsletters(source);
 ```
 
 ## Approved Genres
 
 Technology, Business, Philosophy, Culture, Science, Health, Productivity, Writing & Creativity, Personal Growth, Finance, Politics, Education, Lifestyle, Humor & Entertainment, Spirituality
 
-## Rate Limiting Configuration
+## Rate Limiting Configuration ✅ IMPLEMENTED
 
 ```python
-# Batch Configuration
+# Daily Batch Processing Configuration
 BATCH_SIZE = 10  # newsletters in the prompt per LLM call
 BATCH_INTERVAL = 3600  # 1 hour between batches (seconds)
 RETRY_ATTEMPTS = 3  # retries per failed call
 RETRY_INTERVAL = 600  # 10 minutes between retries (seconds)
+
+# Weekly Digest Rate Limiting Configuration
+WEEKLY_DIGEST_GENRE_INTERVAL = 900  # 15 minutes between genre processing (seconds)
+WEEKLY_DIGEST_RETRY_ATTEMPTS = 2  # 2 retries per failed genre
+WEEKLY_DIGEST_RETRY_INTERVAL = 300  # 5 minutes between retries (seconds)
+
+# Test Mode Configuration (set to True for faster testing)
+WEEKLY_DIGEST_TEST_MODE = False  # When True, uses shorter intervals for testing
+WEEKLY_DIGEST_TEST_GENRE_INTERVAL = 60  # 1 minute between genres in test mode
+WEEKLY_DIGEST_TEST_RETRY_INTERVAL = 30  # 30 seconds between retries in test mode
 ```
