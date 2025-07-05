@@ -5,5 +5,8 @@
 .cursor/
 __pycache__/
 processors/__pycache__/
-email_processor/__pycache__/
+email_processing/__pycache__/
+tests/__pycache__/__pycache__/
+processors/__pycache__/
+email_processing/__pycache__/
 tests/__pycache__/
