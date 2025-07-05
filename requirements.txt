@@ -3,3 +3,10 @@ openai
 python-dotenv
 pydantic
 langchain
+apscheduler
+notion-client
+beautifulsoup4
+psutil
+requests
+imapclient
+email-validator
