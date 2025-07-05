@@ -97,13 +97,11 @@ class BatchProcessor:
         # Prepare newsletter info for LLM
         newsletter_info = []
         for i, newsletter in enumerate(batch):
-            # Get cleaned content (first 3000 chars to avoid token limits)
-            content = newsletter.get('body', '')[:3000]
+            content = newsletter.get('body', '')
             
             newsletter_info.append(f"""
 Newsletter {i+1}:
 Subject: {newsletter.get('subject', 'No Subject')}
-Sender: {newsletter.get('sender', 'No Sender')}
 Content: {content}
 """)
         
@@ -114,10 +112,10 @@ Content: {content}
 You are an expert newsletter analyst. Analyze these {len(batch)} newsletters and provide structured output.
 
 For each newsletter, provide:
-1. A comprehensive summary (less than 1000 words) that captures the main content, key insights, and valuable information
+1. A comprehensive summary that captures the main content, key insights, and valuable information. Feel free to format it in markdown format. Ensure the summary comprehensively covers the newsletter content. Don't be afraid of any character limits, just make sure the summary doesn't miss any important information from the newsletter content.
 2. A genre classification from the approved list (a single genre for each newsletter)
 
-APPROVED GENRES (use exactly these): {approved_genres_text}
+APPROVED GENRES (use one of these for each): {approved_genres_text}
 
 NEWSLETTERS TO ANALYZE:
 {newsletters_text}

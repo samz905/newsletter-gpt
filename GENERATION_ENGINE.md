@@ -118,7 +118,7 @@ CREATE INDEX idx_newsletters_genre ON newsletters(genre);
 **Steps:**
 1. **Date Range Query** - Get newsletters from last 7 days
 2. **Genre Grouping** - Group newsletters by genre tags
-3. **Langchain Document Retrieval** - Load Document objects from database
+3. **Document Retrieval** - Load Document objects from database
 
 ### 2.2 Unified Weekly Digest Generation
 **Steps:**
