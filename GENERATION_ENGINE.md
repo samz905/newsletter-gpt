@@ -83,7 +83,6 @@ metadata = {
     'sender': email.sender,           # Email sender address  
     'subject': email.subject,         # Email subject
     'date': email.date,              # Email date (YYYY-MM-DD format)
-    'source': extract_source_link(email.body),  # Extracted from email body
     'genre': llm_response.genre,     # From LLM batch response
     'word_count': len(llm_response.summary.split()),  # From LLM summary
 }
@@ -104,7 +103,6 @@ CREATE TABLE newsletters (
     sender TEXT NOT NULL,
     subject TEXT NOT NULL,
     summary TEXT NOT NULL,
-    source TEXT NOT NULL,
     genre TEXT NOT NULL,
     word_count INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -112,7 +110,6 @@ CREATE TABLE newsletters (
 
 CREATE INDEX idx_newsletters_date ON newsletters(date);
 CREATE INDEX idx_newsletters_genre ON newsletters(genre);
-CREATE INDEX idx_newsletters_source ON newsletters(source);
 ```
 
 ## Phase 2: Weekly Scheduler (Runs Sunday at 7 AM)
@@ -135,13 +132,13 @@ CREATE INDEX idx_newsletters_source ON newsletters(source);
 # Weekly Newsletter Digest - [DATE]
 
 ## Business
-[Genre summary with key insights and sources]
+[Genre summary with key insights]
 
 ## Technology
-[Genre summary with key insights and sources]
+[Genre summary with key insights]
 
 ## Science
-[Genre summary with key insights and sources]
+[Genre summary with key insights]
 
 [... for each genre present that week]
 
@@ -168,7 +165,6 @@ for newsletter_result in llm_batch_response['newsletters']:
         metadata={
             'sender': original_email.sender,
             'subject': original_email.subject,
-            'source': extract_source_link(original_email.body),
             'date': original_email.date,
             'genre': newsletter_result['genre'],
             'word_count': len(newsletter_result['summary'].split()),
