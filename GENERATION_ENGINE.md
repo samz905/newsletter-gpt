@@ -21,10 +21,11 @@ unsubscribe_keywords = [
 #### 1.2.1 Email to Structured Data Conversion
 **Steps:**
 1. **Content Extraction** - Extract clean text from confirmed newsletters
-2. **LLM Summary Generation** - Create individual summaries for each newsletter
-3. **LLM Genre Classification** - Assign genre tags from approved list
-4. **Metadata Enrichment** - Add complete metadata set
-5. **Langchain Document Creation** - Create Document objects with text and metadata
+2. **Batch Processing** - Use 10 newsletters in the prompt for LLM processing
+3. **LLM Batch Analysis** - Single call for 10 newsletters returning structured output (summary + genre for each)
+4. **Data Extraction** - Extract individual newsletter data from structured LLM response
+5. **Local Metadata Enrichment** - Add metadata properties (no LLM needed)
+6. **Langchain Document Creation** - Create Document objects with text and metadata
 
 #### Genre Tags (Only These):
 ```python
@@ -47,15 +48,44 @@ approved_genres = [
 ]
 ```
 
-#### Complete Metadata Set:
+#### Batch Processing & Rate Limiting:
 ```python
+# Batch Configuration
+BATCH_SIZE = 10  # newsletters in the prompt per LLM call
+BATCH_INTERVAL = 3600  # 1 hour between batches (seconds)
+RETRY_ATTEMPTS = 3  # retries per failed call
+RETRY_INTERVAL = 600  # 10 minutes between retries (seconds)
+```
+
+#### LLM Structured Output Format:
+```json
+{
+  "newsletters": [
+    {
+      "newsletter_id": 1,
+      "summary": "Comprehensive summary of newsletter content...",
+      "genre": "Technology"
+    },
+    {
+      "newsletter_id": 2, 
+      "summary": "Another newsletter summary...",
+      "genre": "Business"
+    }
+    // ... up to 10 newsletters per batch
+  ]
+}
+```
+
+#### Local Metadata Enrichment (No LLM Required):
+```python
+# Extracted directly from email properties
 metadata = {
-    'sender': str,           # Email sender address
-    'subject': str,          # Email subject
-    'date': str,             # Email date (YYYY-MM-DD format)
-    'source': str            # Source link
-    'genres': str,            # One of approved_genres
-    'word_count': int,       # Summary word count
+    'sender': email.sender,           # Email sender address  
+    'subject': email.subject,         # Email subject
+    'date': email.date,              # Email date (YYYY-MM-DD format)
+    'source': extract_source_link(email.body),  # Extracted from email body
+    'genre': llm_response.genre,     # From LLM batch response
+    'word_count': len(llm_response.summary.split()),  # From LLM summary
 }
 ```
 
@@ -122,26 +152,28 @@ CREATE INDEX idx_newsletters_source ON newsletters(source);
 ## Technical Implementation
 
 ### Required Components:
-1. **EmailDailyProcessor** - Handles daily email ingestion
-2. **SQLiteManager** - Database operations
-3. **WeeklyDigestGenerator** - Creates weekly digests
+1. **EmailDailyProcessor** - Handles daily email ingestion and batch processing
+2. **BatchProcessor** - Manages batching, rate limiting, and LLM calls  
+3. **SQLiteManager** - Database operations
+4. **WeeklyDigestGenerator** - Creates weekly digests
 
 ### Langchain Integration:
 ```python
 from langchain.schema import Document
 
-# Create Document object
-doc = Document(
-    page_content=summary_text,
-    metadata={
-        'sender': sender_address,
-        'subject': email_subject,
-        'source': newsletter_source,
-        'date': email_date,
-        'genre': assigned_genre,
-        'word_count': len(summary_text.split()),
-    }
-)
+# Process batch response and create Document objects
+for newsletter_result in llm_batch_response['newsletters']:
+    doc = Document(
+        page_content=newsletter_result['summary'],
+        metadata={
+            'sender': original_email.sender,
+            'subject': original_email.subject,
+            'source': extract_source_link(original_email.body),
+            'date': original_email.date,
+            'genre': newsletter_result['genre'],
+            'word_count': len(newsletter_result['summary'].split()),
+        }
+    )
 ```
 
 ### Scheduler Configuration:
@@ -157,8 +189,9 @@ doc = Document(
 
 ## Implementation Order:
 1. Create SQLite database schema
-2. Implement EmailDailyProcessor
-3. Set up daily scheduler (8 PM)
-4. Implement WeeklyDigestGenerator
-5. Set up weekly scheduler (Sunday 7 AM)
-6. Add error handling and logging 
+2. Implement BatchProcessor with rate limiting and retry logic
+3. Implement EmailDailyProcessor with batch integration
+4. Set up daily scheduler (8 PM) 
+5. Implement WeeklyDigestGenerator
+6. Set up weekly scheduler (Sunday 7 AM)
+7. Add comprehensive error handling and logging 
