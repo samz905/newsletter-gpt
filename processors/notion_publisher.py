@@ -1,21 +1,11 @@
-"""
-Notion Publisher for Newsletter GPT
-Publishes weekly digests to Notion with rich formatting
-"""
-
 import os
-import logging
-from typing import Dict, List, Optional
-from datetime import datetime, timedelta
+from typing import Dict, Optional
+from datetime import datetime
 from notion_client import Client
 from notion_client.errors import APIResponseError
 from dotenv import load_dotenv
 
 load_dotenv()
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 class NotionPublisher:
     """
@@ -33,7 +23,6 @@ class NotionPublisher:
             raise ValueError("NOTION_DATABASE_ID environment variable is required")
         
         self.client = Client(auth=self.notion_token)
-        logger.info("Notion client initialized successfully")
     
     def publish_weekly_digest(self, digest_data: Dict) -> Optional[str]:
         """
@@ -289,14 +278,13 @@ class NotionPublisher:
             )
             
             page_id = response.get('id')
-            logger.info(f"Successfully published weekly digest to Notion: {page_id}")
             return page_id
             
         except APIResponseError as e:
-            logger.error(f"Notion API error: {e}")
+            print(f"❌ Notion API error: {e}")
             return None
         except Exception as e:
-            logger.error(f"Error publishing to Notion: {e}")
+            print(f"❌ Error publishing to Notion: {e}")
             return None
     
     def _get_genre_emoji(self, genre: str) -> str:
@@ -325,13 +313,12 @@ class NotionPublisher:
         try:
             # Test by retrieving database info
             response = self.client.databases.retrieve(database_id=self.database_id)
-            logger.info(f"Notion connection test successful: {response.get('title', [{}])[0].get('plain_text', 'Database')}")
             return True
         except APIResponseError as e:
-            logger.error(f"Notion connection test failed: {e}")
+            print(f"❌ Notion connection test failed: {e}")
             return False
         except Exception as e:
-            logger.error(f"Notion connection test error: {e}")
+            print(f"❌ Notion connection test error: {e}")
             return False
 
 # Test the publisher
