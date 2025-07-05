@@ -8,8 +8,34 @@ A simple personal newsletter processing system that automatically fetches, proce
 - **AI Summarization**: Uses free Gemini model to generate summaries 
 - **Weekly Digests**: Creates comprehensive weekly summaries every Sunday at 7 AM
 - **Notion Integration**: Publishes digests to Notion with rich formatting
-- **FastAPI Server**: Simple web server with automatic background processing
+- **FastAPI Server**: Web server that uses background workers for automated processing
 - **15 Genres**: Supports Technology, Business, Science, Health, and 11 other categories
+
+## Architecture
+```mermaid
+    A[⏰ Daily Scheduler] -->|8 PM Daily| B[Email Daily Processor]
+    C[⏰ Weekly Scheduler] -->|Sunday 7 AM| D[Weekly Digest Generator]
+    
+    B -->|IMAP Fetch| E[📧 Email Servers]
+    B -->|Primitive Filter| F[Potential Newsletters]
+    F -->|Batch Processor| G[LLM Batch Analysis]
+    G -->|10 newsletters/call| H[Summary]
+    H --> I[📊 SQLite Database]
+    
+    D -->|Query Last 7 Days| I
+    D --> L[📄 Weekly Digest]
+    L --> M[Notion]
+    
+    N[👤 User] --> M
+    
+    style A fill:#fff3e0
+    style C fill:#e8f5e8
+    style B fill:#e1f5fe
+    style D fill:#e8f5e8
+    style I fill:#f3e5f5
+    style G fill:#fff8e1
+    style M fill:#fce4ec
+```
 
 ## Quick Start
 
@@ -108,21 +134,6 @@ curl -X POST http://localhost:8000/jobs/weekly
 
 # Check status
 curl http://localhost:8000/status
-```
-
-## File Structure
-
-```
-newsletter-gpt/
-├── app.py                 # FastAPI server
-├── test_workflow.py       # Testing script
-├── config.py             # Configuration
-├── processors/           # Core processing modules
-│   ├── scheduler.py      # Background scheduler
-│   ├── notion_publisher.py
-│   └── [other processors]
-├── email_processing/     # Email handling
-└── digests/             # Generated digest files
 ```
 
 ## Development
