@@ -1,6 +1,6 @@
 # Newsletter GPT
 
-A simple personal newsletter processing system that automatically fetches, processes, and generates AI-powered digest summaries from your email subscriptions.
+A simple personal newsletter processing system that automatically fetches, processes, and generates AI-powered digest summaries from your email subscriptions. Detailed writeup [here](https://medium.com/@samarthzalte905/building-newslettergpt-no-more-newsletter-overload-25c0a3d48827).
 
 ## Features
 
